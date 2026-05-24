@@ -236,7 +236,7 @@
     //-------------------------------------------------------------------------
 
     function play() { hide('start'); reset();          playing = true;  }
-    function lose() { show('start'); setVisualScore(); playing = false; }
+    function lose() { show('start'); setVisualScore(); playing = false; invalidate(); drawGameOver(); }
 
     function setVisualScore(n)      { vscore = n || score; invalidateScore(); }
     function setScore(n)            { score = n; setVisualScore(n);  }
@@ -395,6 +395,8 @@
         ctx.strokeRect(0, 0, nx*dx - 1, ny*dy - 1); // court boundary
         invalid.court = false;
       }
+      if (!playing)
+        drawGameOver();
     }
 
     function drawNext() {
@@ -432,11 +434,19 @@
     }
 
     function drawBlock(ctx, x, y, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x*dx, y*dy, dx, dy);
-      ctx.strokeRect(x*dx, y*dy, dx, dy)
-    }
+  ctx.fillStyle = color;
+  ctx.fillRect(x*dx, y*dy, dx, dy);
+  ctx.strokeRect(x*dx, y*dy, dx, dy)
+  }
 
+function drawGameOver() {
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, canvas.width, canvas.height/2 - 20);
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 30px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2);
+  }
     //-------------------------------------------------------------------------
     // FINALLY, lets run the game
     //-------------------------------------------------------------------------
